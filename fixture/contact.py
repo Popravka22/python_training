@@ -35,6 +35,7 @@ class ContactHelper:
     def edit_first(self, contact):
         wd = self.app.wd
         # select first contact
+        wd.find_element(By.LINK_TEXT, "home").click()
         wd.find_element(By.NAME, "selected[]").click()
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
         # edit entry
@@ -59,6 +60,7 @@ class ContactHelper:
     def delete_first_contact(self):
         wd = self.app.wd
         #select first contact
+        wd.find_element(By.LINK_TEXT, "home").click()
         wd.find_element(By.NAME, "selected[]").click()
         #submit deletion contact
         wd.find_element_by_xpath("//input[@value='Delete']").click()
