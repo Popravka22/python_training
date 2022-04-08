@@ -1,3 +1,5 @@
+import time
+
 from selenium.webdriver.common.by import By
 
 
@@ -21,4 +23,26 @@ class SessionHelper:
     def logout(self):
         wd = self.app.wd
         wd.find_element(By.LINK_TEXT, "Logout").click()
-        #wd.find_element_by_link_text("Logout").click()
+        time.sleep(3)
+
+    def ensure_logout(self):
+        wd = self.app.wd
+        if self.is_logged_in():
+            self.logout()
+
+    def is_logged_in(self):
+        wd = self.app.wd
+        return len(wd.find_elements(By.LINK_TEXT, "Logout")) > 0 #df;yj использовать именно find.elementS, иначе все падает, т.к. поиск возвращает 404?
+
+    def is_logged_in_as(self, username):
+        wd = self.app.wd
+        return wd.find_element(By.XPATH, "//div[@id='top']/form/b").text == "("+username+")"
+
+    def ensure_login(self, username, password):
+        wd = self.app.wd
+        if self.is_logged_in():
+            if self.is_logged_in_as(username):
+                return
+            else:
+                self.logout()
+        self.login(username, password)
